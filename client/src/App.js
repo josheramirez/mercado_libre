@@ -4,10 +4,8 @@ import axios from 'axios'
 
 import React, {useEffect, useState} from 'react';
 import { Search } from './components/Search';
-import { ResultComponent } from './components/ResultComponent';
-import { ItemComponent } from './components/ItemComponent';
 import { ItemDetail } from './components/ItemDetail';
-import { ItemSearch } from './components/ItemSearch';
+import { SearchResponse } from './components/SearchResponse';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
 function App() {
@@ -15,7 +13,7 @@ function App() {
 
   // const [loadResult, setloadResult] = useState(false)
   // const [loadDetail, setloadDetail] = useState(false)
-  const [cleanSearch, setCleanSearch] = useState(false)
+  // const [cleanSearch, setCleanSearch] = useState(false)
 
   // const [items, setItems] =useState([])
   // const [item, setItem] =useState(null)
@@ -126,7 +124,7 @@ function App() {
       {/* <Route path='/' element={<SearchComponent returnItems={returnItems} cleanSearch={cleanSearch} setCleanSearch={setCleanSearch}></SearchComponent>}></Route> */}
       {/* <Route path='' element={<Search/>}></Route> */}
       <Route path='/items/:id' element={<ItemDetail/>}></Route>
-      <Route path='/items' element={<ItemSearch/>}></Route>
+      <Route path='/items' element={<SearchResponse/>}></Route>
       <Route path='*' element={<div>ERROR PAGE</div>}></Route>
     </Routes>
     </>

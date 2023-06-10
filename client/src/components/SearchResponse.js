@@ -1,10 +1,8 @@
 import React, { useState,useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Search } from '../components/Search';
-
-import logo from '../assets/logo.png';
 import axios from 'axios'
-export const ItemSearch = () => {
+
+export const SearchResponse = () => {
 
     // const returnData = (items) =>{
     //     returnItems(items)
@@ -129,7 +127,7 @@ export const ItemSearch = () => {
 
             {/* <Search></Search> */}
 
-            <div style={{backgroundColor:'#ededed'}}>
+            <div style={{backgroundColor:'#ededed', paddingBottom: '80px'}}>
         
             <div className='breadcrumb' style={{textAlign: 'left', width: '1200px',margin:' auto'}}>123/123/123</div>
     

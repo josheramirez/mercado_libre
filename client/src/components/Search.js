@@ -1,43 +1,32 @@
 import React, { useState,useEffect } from 'react'
 import logo from '../assets/logo.png';
-import axios from 'axios'
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import style from "../styles/Search.module.scss"
 
 export const Search = () => {
+
     const navigate = useNavigate();
     const [text, setText] = useState('');
-    const [submitted, setSubmitted] = useState('');
-
 
     function handleChange(e) {
-        // if(cleanSearch){
-        //     setCleanSearch(false)
-        // }
         setText(e.target.value);
     }
 
     function handleSubmit(e) {
         console.log("handleSubmit");
         e.preventDefault();
-        setSubmitted(text);
-        //fetchSearch(searchUrl+text)
-        // setText("")
         navigate("/items/?search="+text)
     }
     
     return (
-        <div                     style={{
-            backgroundColor: "#fff159", 
-            // display:'flex', 
-            flexDirection: 'row',
+        <div          
+        style={{
             
-            paddingTop: '10px',
-            paddingBottom: '10px'
             }}>
        
             <div className="" 
                 style={{
-                    // backgroundColor: "#fff159", 
+                 
                     display:'flex', 
                     flexDirection: 'row',
                     // paddingTop: '10px',

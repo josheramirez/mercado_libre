@@ -2,11 +2,7 @@ import React, { useState,useEffect } from 'react'
 import axios from 'axios'
 
 export const ItemComponent = ({data}) => {
-  
-  console.log("ItemComponent recive : ", data);
 
-
-  console.log(data);
   const itemUrl = "http://localhost:4200/items/";
   
   // const fetchItem = (url) => {
