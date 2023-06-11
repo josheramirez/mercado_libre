@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { getItem, getDescription, getItems, getCategory } = require ('../services/service')
 
 const controller = {}
 
@@ -6,117 +7,70 @@ let baseUrlSearch = "https://api.mercadolibre.com/sites/MLA/"
 let baseUrlItem = "https://api.mercadolibre.com/items/"
 
 
-controller.item = (req, res)=>{
-    console.log("recive : ",req.params.id);
+controller.detail = async (req, res)=>{
 
-    axios.get(baseUrlItem+"/"+req.params.id)
-    .then((response)=>{
-        console.log(response);
-        var description = null
-        promises = [];
+    // call service to get item
+    const item = await getItem(baseUrlItem+"/"+req.params.id)
+    
+    // call service to get description
+    var description = await getDescription(baseUrlItem+"/"+req.params.id+"/description")
+    
+    // create response json object
+    let tempItem={
+        "id": item.id,
+        "title": item.title,
+        "price": {
+            "currency": item.currency_id,
+            "amount": item.available_quantity,
+            "decimals": item.price
+        },
+        "picture": item.thumbnail,
+        "condition": item.condition,
+        "free_shipping": item.shipping.free_shipping,
+        "sold_quantity": item.sold_quantity,
+        "description": description.plain_text
+    }
 
-        // response.data.results.forEach( 
-        //     (function (item) {
-        //         const myUrl = 'https://api.mercadolibre.com/categories/'+item.category_id;
-        //         promises.push(axios.get(myUrl));
-        //     })
-        // );
-
-            promises.push(axios.get(baseUrlItem+"/"+req.params.id+"/description"));
-
-            Promise.all(promises).then(function (results) {
-            results.forEach(function (res) {
-                description = res.data
-            });
-            console.log("description : ",description);
-
-            }).then(()=>{
-
-                let tempResult = []
-
-                console.log("description : ",response.data);
-                // create structure for each item result
-                // response.data.results.forEach((item)=>{
-                //     tempResult.push({
-                    let tempItem=
-                {        "id": response.data.id,
-                        "title": response.data.title,
-                        "price": {
-                            "currency": response.data.currency_id,
-                            "amount": response.data.available_quantity,
-                            "decimals": response.data.price
-                        },
-                        "picture": response.data.thumbnail,
-                        "condition": response.data.condition,
-                        "free_shipping": response.data.shipping.free_shipping,
-                        "sold_quantity": response.data.sold_quantity,
-                        "description": description}
-                //     })
-                // })
-                res.json({
-                    author:req.author,
-                    // categories:Array.from(new Set(tempCategoryArray)),
-                    item: tempItem
-                })
-            })
-        
-        ;
-
+    // server final response
+    res.json({
+        author:req.author,
+        // categories:Array.from(new Set(tempCategoryArray)),
+        item: tempItem
     })
-    .catch((error)=>{res.send(error)})
 }
-controller.index = (req, res)=>{
-        console.log("search : ",req.query.search);
-        axios.get(baseUrlSearch+"/search?q="+req.query.search+"&limit=4")
-        .then((response)=>{
-            var tempCategoryArray = []
-            promises = [];
 
-            response.data.results.forEach( 
-                (function (item) {
-                    const myUrl = 'https://api.mercadolibre.com/categories/'+item.category_id;
-                    promises.push(axios.get(myUrl));
-                })
-            );
+controller.items = async (req, res) => {
+    
+    // call service to get item
+    const items = await getItems(baseUrlSearch+"/search?q="+req.query.search+"&limit=4")
 
-            Promise.all(promises).then(function (results) {
-                results.forEach(function (response) {
-                    tempCategoryArray.push(response.data.name)
-                });
+    console.log(items);
+    // call service to get category
+    var category = await getCategory(items)
 
-            }).then(()=>{
-
-                let tempResult = []
-                // create structure for each item result
-                response.data.results.forEach((item)=>{
-                    tempResult.push({
-                        "id": item.id,
-                        "title": item.title,
-                        "price": {
-                            "currency": item.currency_id,
-                            "amount": item.available_quantity,
-                            "decimals": item.price
-                        },
-                        "picture": item.thumbnail,
-                        "condition": item.condition,
-                        "free_shipping": item.shipping.free_shipping
-                    })
-                })
-                res.json({
-                    author:req.author,
-                    categories:Array.from(new Set(tempCategoryArray)),
-                    items: tempResult
-                })
-            })
-            
-            ;
-
+    // create response json object
+    let tempResult = []
+    items.forEach((item)=>{
+        tempResult.push({
+            "id": item.id,
+            "title": item.title,
+            "price": {
+                "currency": item.currency_id,
+                "amount": item.available_quantity,
+                "decimals": item.price
+            },
+            "picture": item.thumbnail,
+            "condition": item.condition,
+            "free_shipping": item.shipping.free_shipping
         })
-        .catch((error)=>{res.send(error)})
-}
+    })
 
-controller.test = (req, res) => {
-res.sendStatus(200)
+    // server final response
+    res.json({
+        author:req.author,
+        categories:Array.from(new Set(category)),
+        items: tempResult
+    })
 }
 
 

@@ -9,7 +9,7 @@ const params =useParams()
 const [data, setItem] =useState(null)
 const [respStatus, setRespStatus] =useState(null)
 
-const itemUrl = "http://localhost:4200/items/";
+const itemUrl = "http://localhost:4200/item/";
   
   const fetchDetails = (url) => {
     return axios.get(url)
