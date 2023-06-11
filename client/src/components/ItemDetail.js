@@ -12,15 +12,13 @@ const [respStatus, setRespStatus] =useState(null)
 const itemUrl = "http://localhost:4200/items/";
   
   const fetchDetails = (url) => {
-    console.log("llamando a servicio back data : ",url);
     return axios.get(url)
-        .then(resp =>{ console.log(resp.status,resp.data.status); if(resp.status===200){setItem(resp.data);setRespStatus(resp.data.status)};console.log(data);})
-        // .then(()=>{
-        // //   setloadResult(false);
-        // //   setloadDetail(true);
-        // //   setCleanSearch(true);
-        // })
-        // .then(console.log("full data : "+JSON.stringify(fullItem)))
+        .then(resp =>{ 
+            if(resp.status===200){
+                setItem(resp.data);
+                setRespStatus(resp.data.status)
+            };
+        })
         .catch(error => console.log(error))
   }
 
@@ -28,16 +26,10 @@ const itemUrl = "http://localhost:4200/items/";
     fetchDetails(itemUrl+params.id)
   }, []);
 
- 
-  
-  const [loadResult, setloadResult] = useState(false)
-  const [loadDetail, setloadDetail] = useState(false)
-  const [cleanSearch, setCleanSearch] = useState(false)
-
   return (
     
     data?
-    <div className="wrap">
+    <div className="wrap" data-testid='container'>
         {respStatus===undefined?(
         <div style={{
         backgroundColor:'#ededed',
@@ -78,7 +70,8 @@ const itemUrl = "http://localhost:4200/items/";
                     }} >|</span>
                     <div className="sales">{data.item.sold_quantity} vendidos</div>
                     </div>
-                    <div className="item_title"  style={{
+                    <div data-testid="item_title"  
+                    style={{
                     fontFamily:'Proxima Nova, -apple-system, Roboto, Arial, sans-serif',
                     fontSize:'27px',
                     fontWeight:'600',

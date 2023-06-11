@@ -1,27 +1,31 @@
 import React, { useState,useEffect } from 'react'
 import logo from '../assets/logo.png';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import style from "../styles/Search.module.scss"
+
 
 export const Search = () => {
 
     const navigate = useNavigate();
     const [text, setText] = useState('');
+    const [submitted, setSubmitted] = useState('');
 
     function handleChange(e) {
         setText(e.target.value);
     }
 
     function handleSubmit(e) {
-        console.log("handleSubmit");
         e.preventDefault();
+        setSubmitted(text);
         navigate("/items/?search="+text)
     }
     
     return (
-        <div          
-        style={{
+        <div                     style={{
+            backgroundColor: "#fff159", 
+            flexDirection: 'row',
             
+            paddingTop: '10px',
+            paddingBottom: '10px'
             }}>
        
             <div className="" 

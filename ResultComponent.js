@@ -1,8 +1,6 @@
 import React from 'react'
 
 export const ResultComponent = ({items, returnItem}) => {
-    console.log("ResultComponent recive : ",items);
-
     const getDetails = (item) => {
         returnItem(item)
     }

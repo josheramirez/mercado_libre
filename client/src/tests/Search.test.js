@@ -1,7 +1,7 @@
 import React from "react";
 import '@testing-library/jest-dom/extend-expect'
 import {fireEvent, render , screen} from '@testing-library/react'
-import { Search } from './Search'
+import { Search } from '../components/Search'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 test('render Search', ()=>{
@@ -10,7 +10,6 @@ test('render Search', ()=>{
         <Search />
       </BrowserRouter>
     );
-    // console.log(component)
     component.getByPlaceholderText("Buscar productos, marcas y más…")
 })
 
