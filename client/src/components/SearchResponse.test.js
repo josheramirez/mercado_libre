@@ -1,6 +1,6 @@
 import { BrowserRouter} from 'react-router-dom';
 import React from 'react';
-import { SearchResponse } from '../components/SearchResponse'
+import { SearchResponse } from './SearchResponse'
 import Router from 'react-router';
 import axiosMock from "axios";
 import {act, render, cleanup, waitFor, fireEvent, getAllByTestId} from '@testing-library/react';

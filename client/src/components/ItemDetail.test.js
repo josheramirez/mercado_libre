@@ -1,7 +1,7 @@
 import { BrowserRouter} from 'react-router-dom';
 import React from 'react';
 import {act, render, cleanup,waitFor} from '@testing-library/react';
-import { ItemDetail } from '../components/ItemDetail'
+import { ItemDetail } from './ItemDetail'
 import Router from 'react-router';
 import axiosMock from "axios";
 

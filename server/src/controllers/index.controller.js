@@ -115,5 +115,9 @@ controller.index = (req, res)=>{
         .catch((error)=>{res.send(error)})
 }
 
+controller.test = (req, res) => {
+res.sendStatus(200)
+}
+
 
 module.exports = controller
