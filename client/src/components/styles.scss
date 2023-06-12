@@ -1,0 +1,134 @@
+
+// SEACH
+.wrapper_search{
+    background-color: #fff159;
+    flex-direction: row;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    .container_search{
+      display: flex; 
+      flex-direction: row;
+      width: 1200px;
+      margin: auto;
+
+      img{
+        height: 40px
+      }
+
+      .search_form{
+          width:100%;
+          align-content: center;
+          display: flex;
+
+          .search_box{
+              display: flex;
+              width: 100%;
+              justify-content: end;
+
+              .search_input{
+                  all: unset;
+                  width: 90%;
+                  font: 16px system-ui;
+                  color: black;
+                  height: 100%;
+                  text-align: left;
+                  padding-left: 6px;
+                  background-color:white
+              }
+              .search_button{
+                  cursor: pointer;
+                  width: 44px;
+                  height: 44px;
+                  background-color: #ededed;
+                  border: none;
+
+                  .i{
+                    font-size:22px;
+                    color:#888
+                  }
+              }
+          }
+      }
+    }
+}
+
+// SEARCH RESULT
+.wrapper_items{
+  .container_items{
+    background-color:#ededed; padding-bottom: 80px
+  }
+  .breadcrumb{
+    text-align: left;
+    width: 1200px;
+    margin: auto;
+    padding-top: 15px;
+    padding-bottom: 15px; 
+    color: rgb(102, 102, 102);
+    font-weight: lighter;
+    span{
+      padding-left: 5px;
+       padding-right: 5px;
+    }
+  }
+  .items{
+    width: 1200px;
+    margin: auto;
+    .item_container{
+      display: flex;
+      flex-direction:column;
+      background-color:white;
+      .item{
+        display: flex; 
+        justify-content: space-between;
+        background-color:white;
+        margin:20px;
+        .left{
+          display:flex;
+          .item_img{
+            img{
+              width: 200px;
+              height: 200px;
+              cursor: pointer;
+            }
+          }
+          .item_info{
+            display: flex; 
+            flex-direction: column;
+            text-align: left;
+            margin-left: 20px;
+            margin-top: 15px;
+            .price{
+              font-size:25px;
+              cursor: pointer
+            }
+            .title{
+              font-size: 20px;
+              margin-top: 5px;
+              cursor: pointer;
+            }
+            .condition{
+              font-size: 20px;
+              cursor: pointer
+            }
+          }
+        
+        }
+        .right{
+          margin-top: 25px;
+          margin-right: 60px;
+          font-size: 15px;
+        }
+      }
+      hr{
+        width: 95%;
+        color:white;
+        margin: auto; 
+        border: none;
+        border-bottom: thin solid #eee
+      }
+    }
+  }
+}
+
+// DETAILS

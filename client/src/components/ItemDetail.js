@@ -46,7 +46,7 @@ const itemUrl = "http://localhost:4200/api/items/";
                     </div>
                     <div className="item_info" style={{display:'flex',flexDirection:'column',marginTop:'70px',fontSize:'20px'}}>
                         <div className="item_description_title" style={{fontSize:'25px', fontWeight:600,fontSize:'24px'}}>Descripción del producto</div>
-                        <div className="item_description" style={{fontSize:'20px',marginTop:'35px',color:'rgb(102, 102, 102)'}}>{data.item.description.plain_text}</div>
+                        <div className="item_description" style={{fontSize:'20px',marginTop:'35px',color:'rgb(102, 102, 102)'}}>{data.item.description}</div>
                     </div>
                 </div>
                 <div className="container">
