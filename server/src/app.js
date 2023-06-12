@@ -2,15 +2,13 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-
-// app.all('*')
-// middleware to check invalid routes
+const middleware = require('../src/middlewares/index.middleware')
 
 
 // TODO
-// - test
 // - route invalid request
-
+// - complete middleware to check invalid routes
+// - handle error response
 
 app.use(
     cors({
@@ -18,10 +16,7 @@ app.use(
     })
 )
 
-app.use((req, res, next)=>{
-    console.log("middleware routes");
-    next()
-})
+// app.use(middleware.errorHandler);
 
 app.use(require('./routes/index.routes'))
 

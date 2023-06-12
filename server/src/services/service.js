@@ -2,19 +2,19 @@
 const axios = require('axios')
 
 const getItem = async (url) => {
+    console.log('getItem : ',url);
     const res = await axios.get(url)
     return res.data;
 }
 
 const getDescription = async (url) => {
+    console.log('getDescription : ',url);
     const res = await axios.get(url)
     return res.data;
 }
 
 const getItems = async (url) =>{
-    console.log("getItems : ",url);
     const res = await axios.get(url)
-    console.log(res);
     return res.data.results;
 }
 

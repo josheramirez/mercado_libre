@@ -6,8 +6,8 @@ const middleware = require('../middlewares/index.middleware')
 
 
 
-router.get("/items", middleware.author, controller.items);
-router.get("/items/:id", middleware.author, controller.detail);
+router.get("/api/items", middleware.author, controller.items);
+router.get("/api/items/:id", middleware.author, controller.detail);
 // router.get("/test", middleware.author, controller.test);
 
 module.exports = router

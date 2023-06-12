@@ -9,7 +9,9 @@ let baseUrlItem = "https://api.mercadolibre.com/items/"
 
 controller.detail = async (req, res)=>{
 
+    console.log("req.params.id : ", req.params);
     // call service to get item
+    console.log(baseUrlItem+"/"+req.params.id);
     const item = await getItem(baseUrlItem+"/"+req.params.id)
     
     // call service to get description
@@ -40,11 +42,11 @@ controller.detail = async (req, res)=>{
 }
 
 controller.items = async (req, res) => {
-    
+
+    console.log("req.query : ", req.query);
     // call service to get item
     const items = await getItems(baseUrlSearch+"/search?q="+req.query.search+"&limit=4")
 
-    console.log(items);
     // call service to get category
     var category = await getCategory(items)
 

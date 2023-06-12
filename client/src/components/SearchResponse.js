@@ -10,7 +10,7 @@ export const SearchResponse = () => {
     const params = searchParams.get('search')
     const [items, setItems] = useState(null);
 
-    const searchUrl = "http://localhost:4200/items?search=";
+    const searchUrl = "http://localhost:4200/api/items?search=";
 
     const fetchItems = async (url) => {
         return await axios.get(url)
@@ -33,7 +33,7 @@ export const SearchResponse = () => {
             items?
             <div className="wrap">
                 <div style={{backgroundColor:'#ededed', paddingBottom: '80px'}}>
-                <div className='breadcrumb' style={{textAlign: 'left', width: '1200px',margin:' auto'}}>123/123/123</div>
+                <div className='breadcrumb' style={{textAlign: 'left', width: '1200px',margin:' auto',paddingTop:'15px',paddingBottom:'15px', color:'rgb(102, 102, 102)',fontWeight:'lighter'}}>Consolas y Videojuegos <span>{'>'}</span>Videojuegos</div>
                 <div className='items' data-testid="items" style={{width:'1200px',margin:'auto'}}>
                     {items.map((item,index)=>(
                         <div key={index} className="item_container" style={{display:'flex',flexDirection:'column',backgroundColor:'white'}}>

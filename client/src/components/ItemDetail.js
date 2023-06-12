@@ -9,7 +9,7 @@ const params =useParams()
 const [data, setItem] =useState(null)
 const [respStatus, setRespStatus] =useState(null)
 
-const itemUrl = "http://localhost:4200/item/";
+const itemUrl = "http://localhost:4200/api/items/";
   
   const fetchDetails = (url) => {
     return axios.get(url)
@@ -35,7 +35,7 @@ const itemUrl = "http://localhost:4200/item/";
         backgroundColor:'#ededed',
         paddingBottom: '80px'
         }}>
-        <div className='breadcrumb' style={{textAlign: 'left', width: '1200px',margin:' auto'}}>123/123/123</div>
+        <div className='breadcrumb' style={{textAlign: 'left', width: '1200px',margin:' auto',paddingTop:'15px',paddingBottom:'15px', color:'rgb(102, 102, 102)',fontWeight:'lighter'}}>Consolas y Videojuegos <span>{'>'}</span>Videojuegos</div>
 
         <div className='items' style={{width:'1200px',margin:'auto',fontFamily:'Proxima Nova, -apple-system, Roboto, Arial, sans-serif'}}>
             <div className="item_container" style={{display:'flex',flexDirection:'column',backgroundColor:'white'}}>

@@ -1,8 +1,7 @@
 const request = require('supertest');
 const app = require('./app');
 const axios = require('axios');
-
-// const app = express();
+const { getItem, getDescription, getItems, getCategory } = require ('../src/services/service')
 
 
 const mosckResponse_404 = {
@@ -2230,30 +2229,1152 @@ const mockResponse_search_empty = {
   "available_filters": []
 }
 
-// describe("fist test ",() => {
-//     test('test node', async () =>{    
-//         const result = await request(app)
-//         .get('/test')
-//         // .expect(200)
-        
-//         // expect(result.status).toEqual(200)
-//         // const resp = await request(app).get("/test").send()
-//         // console.log(resp);
-//         expect(result.status).toEqual(200)
+const mockResponse_description = {
+    "text": "",
+    "plain_text": "Con tu consola PlayStation 4 tendrás entretenimiento asegurado todos los días. Su tecnología fue creada para poner nuevos retos tanto a jugadores principiantes como expertos. \n\nCon la consola PlayStation 4, líder mundial en ventas durante años, podrás gozar de horas de juego y una excelente navegabilidad para disfrutar de películas, series y contenido online.\n\nGracias a sus pequeñas dimensiones, su consumo energético es reducido, lo que la convierte en un producto económico y accesible.\n\nNo solo esto, el control DualShock combina funciones revolucionarias y sin precedentes mientras conserva precisión, comodidad y exactitud en cada movimiento.\n\nAdaptada a tus necesidades\nGuardá tus apps, fotos, videos y mucho más en el disco duro, que cuenta con una capacidad de 1 TB. \nAl contar con un procesador de 8 núcleos y uno gráfico, brinda una experiencia dinámica, respuestas ágiles, y transiciones fluidas de imágenes en alta definición.\nPor otro lado, tiene puerto USB y salida HDMI, que permiten conectar accesorios y cargar la batería de tu control mientras jugás.\n\nVas a poder reproducir música, ver tus películas y series favoritas a través de las aplicaciones descargables.",
+    "last_updated": "2023-02-17T22:09:53.675Z",
+    "date_created": "2023-02-17T22:09:53.675Z",
+    "snapshot": {
+        "url": "http://descriptions.mlstatic.com/D-MLA1349060703.jpg?hash=8520c3b8559cb08aa7e782b8f5334ffe_0x0",
+        "width": 0,
+        "height": 0,
+        "status": ""
+    }
+}
 
-//     })
-// })
+const mockResponse_category = {
+    "id": "MLA1087",
+    "name": "Alimento",
+    "picture": null,
+    "permalink": null,
+    "total_items_in_this_category": 10608,
+    "path_from_root": [
+        {
+            "id": "MLA1071",
+            "name": "Animales y Mascotas"
+        },
+        {
+            "id": "MLA1081",
+            "name": "Gatos"
+        },
+        {
+            "id": "MLA434779",
+            "name": "Alimento, Premios y Suplemento"
+        },
+        {
+            "id": "MLA1087",
+            "name": "Alimento"
+        }
+    ],
+    "children_categories": [],
+    "attribute_types": "attributes",
+    "settings": {
+        "adult_content": false,
+        "buying_allowed": true,
+        "buying_modes": [
+            "auction",
+            "buy_it_now"
+        ],
+        "catalog_domain": "MLA-CATS_AND_DOGS_FOODS",
+        "coverage_areas": "not_allowed",
+        "currencies": [
+            "ARS"
+        ],
+        "fragile": false,
+        "immediate_payment": "required",
+        "item_conditions": [
+            "new"
+        ],
+        "items_reviews_allowed": false,
+        "listing_allowed": true,
+        "max_description_length": 50000,
+        "max_pictures_per_item": 12,
+        "max_pictures_per_item_var": 10,
+        "max_sub_title_length": 70,
+        "max_title_length": 60,
+        "max_variations_allowed": 100,
+        "maximum_price": null,
+        "maximum_price_currency": "ARS",
+        "minimum_price": null,
+        "minimum_price_currency": "ARS",
+        "mirror_category": null,
+        "mirror_master_category": null,
+        "mirror_slave_categories": [],
+        "price": "required",
+        "reservation_allowed": "not_allowed",
+        "restrictions": [],
+        "rounded_address": false,
+        "seller_contact": "not_allowed",
+        "shipping_options": [
+            "carrier",
+            "custom"
+        ],
+        "shipping_profile": "optional",
+        "show_contact_information": false,
+        "simple_shipping": "optional",
+        "stock": "required",
+        "sub_vertical": "pets",
+        "subscribable": false,
+        "tags": [],
+        "vertical": "consumer_goods",
+        "vip_subdomain": "articulo",
+        "buyer_protection_programs": [],
+        "status": "enabled"
+    },
+    "channels_settings": [
+        {
+            "channel": "mshops",
+            "settings": {
+                "minimum_price": 0
+            }
+        },
+        {
+            "channel": "proximity",
+            "settings": {
+                "status": "disabled"
+            }
+        },
+        {
+            "channel": "mp-merchants",
+            "settings": {
+                "buying_modes": [
+                    "buy_it_now"
+                ],
+                "immediate_payment": "required",
+                "minimum_price": 1,
+                "status": "enabled"
+            }
+        },
+        {
+            "channel": "mp-link",
+            "settings": {
+                "buying_modes": [
+                    "buy_it_now"
+                ],
+                "immediate_payment": "required",
+                "minimum_price": 1,
+                "status": "enabled"
+            }
+        }
+    ],
+    "meta_categ_id": null,
+    "attributable": false,
+    "date_created": "2018-04-25T08:12:56.000Z"
+}
 
+const mockResults =[
+    {
+        "id": "MLA1371327009",
+        "title": "Nintendo Switch 32gb Standard  Color Rojo Neón, Azul Neón Y Negro",
+        "condition": "new",
+        "thumbnail_id": "770676-MLA32731813622_112019",
+        "catalog_product_id": "MLA8755483",
+        "listing_type_id": "gold_special",
+        "permalink": "https://www.mercadolibre.com.ar/nintendo-switch-32gb-standard-color-rojo-neon-azul-neon-y-negro/p/MLA8755483",
+        "buying_mode": "buy_it_now",
+        "site_id": "MLA",
+        "category_id": "MLA438566",
+        "domain_id": "MLA-GAME_CONSOLES",
+        "thumbnail": "http://http2.mlstatic.com/D_770676-MLA32731813622_112019-I.jpg",
+        "currency_id": "ARS",
+        "order_backend": 1,
+        "price": 255990,
+        "original_price": null,
+        "sale_price": null,
+        "sold_quantity": 3,
+        "available_quantity": 1,
+        "official_store_id": null,
+        "use_thumbnail_id": true,
+        "accepts_mercadopago": true,
+        "tags": [
+            "good_quality_thumbnail",
+            "extended_warranty_eligible",
+            "immediate_payment",
+            "cart_eligible",
+            "best_seller_candidate"
+        ],
+        "shipping": {
+            "store_pick_up": false,
+            "free_shipping": true,
+            "logistic_type": "xd_drop_off",
+            "mode": "me2",
+            "tags": [
+                "self_service_in",
+                "mandatory_free_shipping"
+            ],
+            "promise": null
+        },
+        "stop_time": "2043-05-24T04:00:00.000Z",
+        "seller": {
+            "id": 645847355,
+            "nickname": "STORECBASOCIEDADPORACIONES",
+            "car_dealer": false,
+            "real_estate_agency": false,
+            "_": false,
+            "registration_date": "2020-09-16T14:13:03.000-04:00",
+            "tags": [
+                "normal",
+                "mshops",
+                "credits_profile",
+                "messages_as_seller"
+            ],
+            "car_dealer_logo": "",
+            "permalink": "http://perfil.mercadolibre.com.ar/STORECBASOCIEDADPORACIONES",
+            "seller_reputation": {
+                "level_id": "5_green",
+                "power_seller_status": "platinum",
+                "transactions": {
+                    "canceled": 82,
+                    "completed": 1029,
+                    "period": "historic",
+                    "ratings": {
+                        "negative": 0.05,
+                        "neutral": 0,
+                        "positive": 0.95
+                    },
+                    "total": 1111
+                },
+                "metrics": {
+                    "sales": {
+                        "period": "60 days",
+                        "completed": 508
+                    },
+                    "claims": {
+                        "period": "60 days",
+                        "rate": 0.0037,
+                        "value": 2
+                    },
+                    "delayed_handling_time": {
+                        "period": "60 days",
+                        "rate": 0.0116,
+                        "value": 5
+                    },
+                    "cancellations": {
+                        "period": "60 days",
+                        "rate": 0.0037,
+                        "value": 2
+                    }
+                }
+            }
+        },
+        "seller_address": {
+            "comment": "",
+            "address_line": "",
+            "id": null,
+            "latitude": null,
+            "longitude": null,
+            "country": {
+                "id": "AR",
+                "name": "Argentina"
+            },
+            "state": {
+                "id": "AR-X",
+                "name": "Córdoba"
+            },
+            "city": {
+                "id": "TUxBQ0NBUGNiZGQx",
+                "name": "Córdoba"
+            }
+        },
+        "address": {
+            "state_id": "AR-X",
+            "state_name": "Córdoba",
+            "city_id": "TUxBQ0NBUGNiZGQx",
+            "city_name": "Córdoba"
+        },
+        "attributes": [
+            {
+                "id": "BRAND",
+                "name": "Marca",
+                "value_id": "9565",
+                "value_name": "Nintendo",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "9565",
+                        "name": "Nintendo",
+                        "struct": null,
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "string"
+            },
+            {
+                "id": "ITEM_CONDITION",
+                "name": "Condición del ítem",
+                "value_id": "2230284",
+                "value_name": "Nuevo",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "2230284",
+                        "name": "Nuevo",
+                        "struct": null,
+                        "source": 6808261514773724
+                    }
+                ],
+                "source": 6808261514773724,
+                "value_type": "list"
+            },
+            {
+                "id": "MODEL",
+                "name": "Modelo",
+                "value_id": "17123",
+                "value_name": "Switch",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "17123",
+                        "name": "Switch",
+                        "struct": null,
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "string"
+            },
+            {
+                "id": "WEIGHT",
+                "name": "Peso",
+                "value_id": "7759371",
+                "value_name": "399 g",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": {
+                    "number": 399,
+                    "unit": "g"
+                },
+                "values": [
+                    {
+                        "id": "7759371",
+                        "name": "399 g",
+                        "struct": {
+                            "unit": "g",
+                            "number": 399
+                        },
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "number_unit"
+            }
+        ],
+        "installments": {
+            "quantity": 12,
+            "amount": 46293.66,
+            "rate": 117.01,
+            "currency_id": "ARS"
+        },
+        "winner_item_id": null,
+        "catalog_listing": true,
+        "discounts": null,
+        "promotions": [],
+        "inventory_id": null
+    },
+    {
+        "id": "MLA1146462073",
+        "title": "Nintendo Switch Oled 64gb Standard  Color Blanco Y Negro",
+        "condition": "new",
+        "thumbnail_id": "625423-MLA47920375564_102021",
+        "catalog_product_id": "MLA18537259",
+        "listing_type_id": "gold_special",
+        "permalink": "https://www.mercadolibre.com.ar/nintendo-switch-oled-64gb-standard-color-blanco-y-negro/p/MLA18537259",
+        "buying_mode": "buy_it_now",
+        "site_id": "MLA",
+        "category_id": "MLA438566",
+        "domain_id": "MLA-GAME_CONSOLES",
+        "thumbnail": "http://http2.mlstatic.com/D_625423-MLA47920375564_102021-I.jpg",
+        "currency_id": "ARS",
+        "order_backend": 2,
+        "price": 311672,
+        "original_price": null,
+        "sale_price": null,
+        "sold_quantity": 25,
+        "available_quantity": 1,
+        "official_store_id": null,
+        "use_thumbnail_id": true,
+        "accepts_mercadopago": true,
+        "tags": [
+            "standard_price_by_channel",
+            "extended_warranty_eligible",
+            "good_quality_picture",
+            "good_quality_thumbnail",
+            "immediate_payment",
+            "cart_eligible",
+            "best_seller_candidate",
+            "shipping_guaranteed"
+        ],
+        "shipping": {
+            "store_pick_up": false,
+            "free_shipping": true,
+            "logistic_type": "xd_drop_off",
+            "mode": "me2",
+            "tags": [
+                "self_service_in",
+                "mandatory_free_shipping"
+            ],
+            "promise": null
+        },
+        "stop_time": "2042-07-06T04:00:00.000Z",
+        "seller": {
+            "id": 758521932,
+            "nickname": "PLAYTOGETHERS",
+            "car_dealer": false,
+            "real_estate_agency": false,
+            "_": false,
+            "registration_date": "2021-05-12T18:51:15.000-04:00",
+            "tags": [
+                "normal",
+                "credits_profile",
+                "mshops",
+                "messages_as_seller"
+            ],
+            "car_dealer_logo": "",
+            "permalink": "http://perfil.mercadolibre.com.ar/PLAYTOGETHERS",
+            "seller_reputation": {
+                "level_id": "5_green",
+                "power_seller_status": "platinum",
+                "transactions": {
+                    "canceled": 639,
+                    "completed": 9310,
+                    "period": "historic",
+                    "ratings": {
+                        "negative": 0.02,
+                        "neutral": 0,
+                        "positive": 0.98
+                    },
+                    "total": 9949
+                },
+                "metrics": {
+                    "sales": {
+                        "period": "60 days",
+                        "completed": 1025
+                    },
+                    "claims": {
+                        "period": "60 days",
+                        "rate": 0.0008,
+                        "value": 1
+                    },
+                    "delayed_handling_time": {
+                        "period": "60 days",
+                        "rate": 0.0068,
+                        "value": 7
+                    },
+                    "cancellations": {
+                        "period": "60 days",
+                        "rate": 0.0017,
+                        "value": 2
+                    }
+                }
+            }
+        },
+        "seller_address": {
+            "comment": "",
+            "address_line": "",
+            "id": null,
+            "latitude": null,
+            "longitude": null,
+            "country": {
+                "id": "AR",
+                "name": "Argentina"
+            },
+            "state": {
+                "id": "AR-C",
+                "name": "Capital Federal"
+            },
+            "city": {
+                "id": null,
+                "name": "Capital Federal"
+            }
+        },
+        "address": {
+            "state_id": "AR-C",
+            "state_name": "Capital Federal",
+            "city_id": null,
+            "city_name": "Capital Federal"
+        },
+        "attributes": [
+            {
+                "id": "BRAND",
+                "name": "Marca",
+                "value_id": "9565",
+                "value_name": "Nintendo",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "9565",
+                        "name": "Nintendo",
+                        "struct": null,
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "string"
+            },
+            {
+                "id": "ITEM_CONDITION",
+                "name": "Condición del ítem",
+                "value_id": "2230284",
+                "value_name": "Nuevo",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "2230284",
+                        "name": "Nuevo",
+                        "struct": null,
+                        "source": 3045741222775799
+                    }
+                ],
+                "source": 3045741222775799,
+                "value_type": "list"
+            },
+            {
+                "id": "MODEL",
+                "name": "Modelo",
+                "value_id": "17123",
+                "value_name": "Switch",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "17123",
+                        "name": "Switch",
+                        "struct": null,
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "string"
+            },
+            {
+                "id": "SUBMODEL",
+                "name": "Submodelo",
+                "value_id": "11215301",
+                "value_name": "OLED",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "11215301",
+                        "name": "OLED",
+                        "struct": null,
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "string"
+            },
+            {
+                "id": "WEIGHT",
+                "name": "Peso",
+                "value_id": "13175580",
+                "value_name": "426.38 g",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": {
+                    "number": 426.38,
+                    "unit": "g"
+                },
+                "values": [
+                    {
+                        "id": "13175580",
+                        "name": "426.38 g",
+                        "struct": {
+                            "unit": "g",
+                            "number": 426.38
+                        },
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "number_unit"
+            }
+        ],
+        "installments": {
+            "quantity": 12,
+            "amount": 56363.28,
+            "rate": 117.01,
+            "currency_id": "ARS"
+        },
+        "winner_item_id": null,
+        "catalog_listing": true,
+        "discounts": null,
+        "promotions": [],
+        "inventory_id": null
+    },
+    {
+        "id": "MLA1321744744",
+        "title": "Joystick Compatible Nintendo Switch Pc Android Ios iPhone Inalambrico Accesorios Juegos Dehuka",
+        "condition": "new",
+        "thumbnail_id": "771305-MLA53074090540_122022",
+        "catalog_product_id": "MLA21095245",
+        "listing_type_id": "gold_special",
+        "permalink": "https://www.mercadolibre.com.ar/joystick-compatible-nintendo-switch-pc-android-ios-iphone-inalambrico-accesorios-juegos-dehuka/p/MLA21095245",
+        "buying_mode": "buy_it_now",
+        "site_id": "MLA",
+        "category_id": "MLA416556",
+        "domain_id": "MLA-GAMEPADS_AND_JOYSTICKS",
+        "thumbnail": "http://http2.mlstatic.com/D_771305-MLA53074090540_122022-I.jpg",
+        "currency_id": "ARS",
+        "order_backend": 3,
+        "price": 19748.75,
+        "original_price": null,
+        "sale_price": null,
+        "sold_quantity": 250,
+        "available_quantity": 150,
+        "official_store_id": null,
+        "use_thumbnail_id": true,
+        "accepts_mercadopago": true,
+        "tags": [
+            "extended_warranty_eligible",
+            "good_quality_thumbnail",
+            "immediate_payment",
+            "cart_eligible",
+            "best_seller_candidate",
+            "shipping_guaranteed"
+        ],
+        "shipping": {
+            "store_pick_up": false,
+            "free_shipping": true,
+            "logistic_type": "fulfillment",
+            "mode": "me2",
+            "tags": [
+                "fulfillment",
+                "self_service_out",
+                "mandatory_free_shipping"
+            ],
+            "promise": null
+        },
+        "stop_time": "2043-01-21T04:00:00.000Z",
+        "seller": {
+            "id": 85535544,
+            "nickname": "CIUDAD_ONLINE_360",
+            "car_dealer": false,
+            "real_estate_agency": false,
+            "_": false,
+            "registration_date": "2009-09-17T12:17:14.000-04:00",
+            "tags": [
+                "normal",
+                "credits_priority_4",
+                "credits_profile",
+                "eshop",
+                "mshops",
+                "messages_as_seller"
+            ],
+            "car_dealer_logo": "",
+            "permalink": "http://perfil.mercadolibre.com.ar/DEHUKA",
+            "seller_reputation": {
+                "level_id": "5_green",
+                "power_seller_status": "platinum",
+                "transactions": {
+                    "canceled": 2687,
+                    "completed": 17070,
+                    "period": "historic",
+                    "ratings": {
+                        "negative": 0.1,
+                        "neutral": 0.03,
+                        "positive": 0.87
+                    },
+                    "total": 19757
+                },
+                "metrics": {
+                    "sales": {
+                        "period": "60 days",
+                        "completed": 4052
+                    },
+                    "claims": {
+                        "period": "60 days",
+                        "rate": 0.0096,
+                        "value": 44
+                    },
+                    "delayed_handling_time": {
+                        "period": "60 days",
+                        "rate": 0.0087,
+                        "value": 37
+                    },
+                    "cancellations": {
+                        "period": "60 days",
+                        "rate": 0.003,
+                        "value": 14
+                    }
+                }
+            },
+            "eshop": {
+                "eshop_id": 237932,
+                "seller": 85535544,
+                "nick_name": "CIUDAD_ONLINE_360",
+                "eshop_status_id": 2,
+                "site_id": "MLA",
+                "eshop_experience": 0,
+                "eshop_rubro": null,
+                "eshop_locations": [],
+                "eshop_logo_url": "http://http2.mlstatic.com/eshops-logo/85535544ve22bd1.png"
+            }
+        },
+        "seller_address": {
+            "comment": "",
+            "address_line": "",
+            "id": null,
+            "latitude": null,
+            "longitude": null,
+            "country": {
+                "id": "AR",
+                "name": "Argentina"
+            },
+            "state": {
+                "id": "AR-C",
+                "name": "Capital Federal"
+            },
+            "city": {
+                "id": "TUxBQlBBTDI1MTVa",
+                "name": "Palermo"
+            }
+        },
+        "address": {
+            "state_id": "AR-C",
+            "state_name": "Capital Federal",
+            "city_id": "TUxBQlBBTDI1MTVa",
+            "city_name": "Palermo"
+        },
+        "attributes": [
+            {
+                "id": "BRAND",
+                "name": "Marca",
+                "value_id": "12925415",
+                "value_name": "Dehuka",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "12925415",
+                        "name": "Dehuka",
+                        "struct": null,
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "string"
+            },
+            {
+                "id": "DETAILED_MODEL",
+                "name": "Modelo detallado",
+                "value_id": "15665344",
+                "value_name": "531A",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "15665344",
+                        "name": "531A",
+                        "struct": null,
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "string"
+            },
+            {
+                "id": "ITEM_CONDITION",
+                "name": "Condición del ítem",
+                "value_id": "2230284",
+                "value_name": "Nuevo",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "2230284",
+                        "name": "Nuevo",
+                        "struct": null,
+                        "source": 6808261514773724
+                    }
+                ],
+                "source": 6808261514773724,
+                "value_type": "list"
+            },
+            {
+                "id": "MODEL",
+                "name": "Modelo",
+                "value_id": "15665339",
+                "value_name": "Joystick Inalambrico compatible Nintendo Switch PC Android iOS",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "15665339",
+                        "name": "Joystick Inalambrico compatible Nintendo Switch PC Android iOS",
+                        "struct": null,
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "string"
+            },
+            {
+                "id": "PACKAGE_LENGTH",
+                "name": "Largo del paquete",
+                "value_id": null,
+                "value_name": "16.2 cm",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": {
+                    "number": 16.2,
+                    "unit": "cm"
+                },
+                "values": [
+                    {
+                        "id": null,
+                        "name": "16.2 cm",
+                        "struct": {
+                            "number": 16.2,
+                            "unit": "cm"
+                        },
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "number_unit"
+            },
+            {
+                "id": "PACKAGE_WEIGHT",
+                "name": "Peso del paquete",
+                "value_id": null,
+                "value_name": "340 g",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": {
+                    "number": 340,
+                    "unit": "g"
+                },
+                "values": [
+                    {
+                        "id": null,
+                        "name": "340 g",
+                        "struct": {
+                            "unit": "g",
+                            "number": 340
+                        },
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "number_unit"
+            },
+            {
+                "id": "UNITS_PER_PACKAGE",
+                "name": "Unidades por envase",
+                "value_id": "7386989",
+                "value_name": "1",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "7386989",
+                        "name": "1",
+                        "struct": null,
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "number"
+            }
+        ],
+        "installments": {
+            "quantity": 12,
+            "amount": 3571.4,
+            "rate": 117.01,
+            "currency_id": "ARS"
+        },
+        "winner_item_id": null,
+        "catalog_listing": true,
+        "discounts": null,
+        "promotions": [],
+        "inventory_id": "TQEB53128"
+    },
+    {
+        "id": "MLA1418938130",
+        "title": "Nintendo Switch Oled 64gb Standard  Color Rojo Neón, Azul Neón Y Negro",
+        "condition": "new",
+        "thumbnail_id": "803086-MLA47920649105_102021",
+        "catalog_product_id": "MLA18537258",
+        "listing_type_id": "gold_special",
+        "permalink": "https://www.mercadolibre.com.ar/nintendo-switch-oled-64gb-standard-color-rojo-neon-azul-neon-y-negro/p/MLA18537258",
+        "buying_mode": "buy_it_now",
+        "site_id": "MLA",
+        "category_id": "MLA438566",
+        "domain_id": "MLA-GAME_CONSOLES",
+        "thumbnail": "http://http2.mlstatic.com/D_803086-MLA47920649105_102021-I.jpg",
+        "currency_id": "ARS",
+        "order_backend": 4,
+        "price": 310900,
+        "original_price": null,
+        "sale_price": null,
+        "sold_quantity": 5,
+        "available_quantity": 1,
+        "official_store_id": null,
+        "use_thumbnail_id": true,
+        "accepts_mercadopago": true,
+        "tags": [
+            "extended_warranty_eligible",
+            "good_quality_thumbnail",
+            "immediate_payment",
+            "cart_eligible",
+            "best_seller_candidate",
+            "shipping_guaranteed"
+        ],
+        "shipping": {
+            "store_pick_up": false,
+            "free_shipping": true,
+            "logistic_type": "xd_drop_off",
+            "mode": "me2",
+            "tags": [
+                "self_service_in",
+                "mandatory_free_shipping"
+            ],
+            "promise": null
+        },
+        "stop_time": "2043-05-12T04:00:00.000Z",
+        "seller": {
+            "id": 178803285,
+            "nickname": "WORLDFANTASY75",
+            "car_dealer": false,
+            "real_estate_agency": false,
+            "_": false,
+            "registration_date": "2015-03-09T11:57:20.000-04:00",
+            "tags": [
+                "normal",
+                "credits_profile",
+                "mshops",
+                "messages_as_seller"
+            ],
+            "car_dealer_logo": "",
+            "permalink": "http://perfil.mercadolibre.com.ar/WORLDFANTASY75",
+            "seller_reputation": {
+                "level_id": "5_green",
+                "power_seller_status": "platinum",
+                "transactions": {
+                    "canceled": 92,
+                    "completed": 2055,
+                    "period": "historic",
+                    "ratings": {
+                        "negative": 0.01,
+                        "neutral": 0.01,
+                        "positive": 0.98
+                    },
+                    "total": 2147
+                },
+                "metrics": {
+                    "sales": {
+                        "period": "60 days",
+                        "completed": 477
+                    },
+                    "claims": {
+                        "period": "60 days",
+                        "rate": 0,
+                        "value": 0
+                    },
+                    "delayed_handling_time": {
+                        "period": "60 days",
+                        "rate": 0.0128,
+                        "value": 6
+                    },
+                    "cancellations": {
+                        "period": "60 days",
+                        "rate": 0.002,
+                        "value": 1
+                    }
+                }
+            }
+        },
+        "seller_address": {
+            "comment": "",
+            "address_line": "",
+            "id": null,
+            "latitude": null,
+            "longitude": null,
+            "country": {
+                "id": "AR",
+                "name": "Argentina"
+            },
+            "state": {
+                "id": "AR-C",
+                "name": "Capital Federal"
+            },
+            "city": {
+                "id": "TUxBQlZJTDc4MDda",
+                "name": "Villa del Parque"
+            }
+        },
+        "address": {
+            "state_id": "AR-C",
+            "state_name": "Capital Federal",
+            "city_id": "TUxBQlZJTDc4MDda",
+            "city_name": "Villa del Parque"
+        },
+        "attributes": [
+            {
+                "id": "BRAND",
+                "name": "Marca",
+                "value_id": "9565",
+                "value_name": "Nintendo",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "9565",
+                        "name": "Nintendo",
+                        "struct": null,
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "string"
+            },
+            {
+                "id": "ITEM_CONDITION",
+                "name": "Condición del ítem",
+                "value_id": "2230284",
+                "value_name": "Nuevo",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "2230284",
+                        "name": "Nuevo",
+                        "struct": null,
+                        "source": 6808261514773724
+                    }
+                ],
+                "source": 6808261514773724,
+                "value_type": "list"
+            },
+            {
+                "id": "MODEL",
+                "name": "Modelo",
+                "value_id": "17123",
+                "value_name": "Switch",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "17123",
+                        "name": "Switch",
+                        "struct": null,
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "string"
+            },
+            {
+                "id": "SUBMODEL",
+                "name": "Submodelo",
+                "value_id": "11215301",
+                "value_name": "OLED",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": null,
+                "values": [
+                    {
+                        "id": "11215301",
+                        "name": "OLED",
+                        "struct": null,
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "string"
+            },
+            {
+                "id": "WEIGHT",
+                "name": "Peso",
+                "value_id": "13175580",
+                "value_name": "426.38 g",
+                "attribute_group_id": "OTHERS",
+                "attribute_group_name": "Otros",
+                "value_struct": {
+                    "number": 426.38,
+                    "unit": "g"
+                },
+                "values": [
+                    {
+                        "id": "13175580",
+                        "name": "426.38 g",
+                        "struct": {
+                            "unit": "g",
+                            "number": 426.38
+                        },
+                        "source": 1
+                    }
+                ],
+                "source": 1,
+                "value_type": "number_unit"
+            }
+        ],
+        "installments": {
+            "quantity": 12,
+            "amount": 56223.67,
+            "rate": 117.01,
+            "currency_id": "ARS"
+        },
+        "winner_item_id": null,
+        "catalog_listing": true,
+        "discounts": null,
+        "promotions": [],
+        "inventory_id": null
+    }
+]
+
+// SERVICES
+////////////////////////////////////////////////////////////////////
 jest.mock('axios');
+describe("test services ",() => {
+    it('test get item detail ',async()=>{
+        const res = {data:{"data":mockResponse_item}}
+        axios.get.mockResolvedValue(res)
+        const apiData = await getItem('https://api.mercadolibre.com/items/mockData')
+        expect(apiData.data.item.id).toEqual("MLA1365439293")
+    })
 
-describe("secod test ",() => {
-  test('seconf node', async () =>{    
-      const res = mockResponse_item
-      axios.get.mockResolvedValue(res)
-      const resp = await request(app)
-        .get("/test").send()
-      console.log(resp)
+    it('test get search responce service ',async()=>{
+        const res = {data:mockResonse_search}
+        axios.get.mockResolvedValue(res)
+        const apiData = await getItems('https://api.mercadolibre.com/sites/MLA/search?q=nintendo&limit=4')
+        expect(apiData.length).toEqual(4)
+    })
 
-  })
+    it('test get description item service ',async()=>{
+        const res = {data:mockResponse_description}
+        axios.get.mockResolvedValue(res)
+        const apiData = await getDescription('https://api.mercadolibre.com/items/MLA1349060703/description')
+        expect(apiData.text).toEqual("")
+    })
+
+    it('test get category item service ',async()=>{
+        const res = {data:mockResponse_category}
+        axios.get.mockResolvedValue(res)
+        const apiData = await getCategory(mockResults)
+        expect(apiData.length).toEqual(4)
+    })
 })
-
+////////////////////////////////////////////////////////////////////
