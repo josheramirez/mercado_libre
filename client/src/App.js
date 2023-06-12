@@ -15,7 +15,7 @@ function App() {
     <Routes>
       <Route path='/items/:id' element={<ItemDetail/>}></Route>
       <Route path='/items' element={<SearchResponse/>}></Route>
-      <Route path='*' element={<div>ERROR PAGE</div>}></Route>
+      <Route path='*' element={<div></div>}></Route>
     </Routes>
     </>
   );
