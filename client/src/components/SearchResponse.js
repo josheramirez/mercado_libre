@@ -1,6 +1,8 @@
 import React, { useState,useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios'
+import Error404 from './Error404';
+import EmptySearch from './EmptySearch';
 
 export const SearchResponse = () => {
 
@@ -19,6 +21,7 @@ export const SearchResponse = () => {
         return await axios.get(url,{timeout: 3000})
             .then(resp => {
                 setItems(resp.data.items);
+                console.log((resp.data.items).length);
                 setLoading(true)
             })
             .catch(error => {console.log(error.message);setError(error.message);setLoading(false)})
@@ -36,39 +39,41 @@ export const SearchResponse = () => {
     return (
         params?
             items?
-            <div className="wrapper_items">
-                <div className="container_items">
-                <div className='breadcrumb' >Consolas y Videojuegos <span>{'>'}</span>Videojuegos</div>
-                <div className='items' data-testid="items">
-                    {items.map((item,index)=>(
-                        <div key={index} className="item_container">
-                            <div className="item" >
-                                <div className="left">
-                                    <div className="item_img">
-                                        <img src={item.picture} alt="" data-testid="item_img" onClick={() => getDetails(item)}/>
+                items!=0?
+                    <div className="wrapper_items">
+                        <div className="container_items">
+                        <div className='breadcrumb' >Consolas y Videojuegos <span>{'>'}</span>Videojuegos</div>
+                        <div className='items' data-testid="items">
+                            {items.map((item,index)=>(
+                                <div key={index} className="item_container">
+                                    <div className="item" >
+                                        <div className="left">
+                                            <div className="item_img">
+                                                <img src={item.picture} alt="" data-testid="item_img" onClick={() => getDetails(item)}/>
+                                            </div>
+                                            <div className="item_info">
+                                                <div className="price"  onClick={() => getDetails(item)} data-testid="item_price" >$ {item.price.decimals}</div>
+                                                <div className="title" onClick={() => getDetails(item)} data-testid="item_title">{item.title}</div>
+                                                <div className="condition" onClick={() => getDetails(item)} data-testid="item_condition">{item.condition}</div>
+                                            </div>
+                                        </div>
+                                        <div className="right" >{item.free_shipping?"Envio Gratis":"Envio Pago"}</div>
                                     </div>
-                                    <div className="item_info">
-                                        <div className="price"  onClick={() => getDetails(item)} data-testid="item_price" >$ {item.price.decimals}</div>
-                                        <div className="title" onClick={() => getDetails(item)} data-testid="item_title">{item.title}</div>
-                                        <div className="condition" onClick={() => getDetails(item)} data-testid="item_condition">{item.condition}</div>
-                                    </div>
+                                    <hr/>
                                 </div>
-                                <div className="right" >{item.free_shipping?"Envio Gratis":"Envio Pago"}</div>
-                            </div>
-                            <hr/>
+                            ))}
                         </div>
-                    ))}
-                </div>
-                </div>
-            </div>
+                        </div>
+                    </div>
+                    :
+                    <EmptySearch/>
             :
-            
             <div>
-                {error && <div>{error}</div>}
+                {error && <div>{"error en el servidor : "+error}</div>}
                 {loading? <div>LOADING...</div>:""}
             </div>
         :
-        <div>WRONG URL</div>
+        <Error404/>
     )
 
 }
